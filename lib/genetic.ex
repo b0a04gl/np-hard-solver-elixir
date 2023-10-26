@@ -49,14 +49,27 @@ def run(problem, opts \\ []) do
   def evolve(population, problem, generation, opts \\ []) do
     population = evaluate(population, &problem.fitness_function/1, opts)
     best = hd(population)
-    IO.write("\rCurrent optimal : #{best.fitness}")
+    IO.write("\rCurrent best: #{best.fitness}")
     if problem.terminate?(population, generation) do
       best
     else
       {parents, leftover} = select(population, opts)
-      |> evolve(problem, generation+1, opts)
+      children = crossover(parents, opts)
+        children ++ leftover
     end
   end
 
+
+  def crossover(population, opts \\ []) do
+    population
+    |> Enum.reduce([],
+        fn {p1, p2}, acc ->
+          cx_point = :rand.uniform(length(p1.genes))
+          {{head1, tail1}, {head2, tail2}} = {Enum.split(p1.genes, cx_point), Enum.split(p2.genes, cx_point)}
+          {c1, c2} = {%Chromosome{genes: head1 ++ tail2}, %Chromosome{genes: head2 ++ tail1}}
+          [c1 | [c2 | acc]]
+        end
+      )
+  end
 
 end
