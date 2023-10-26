@@ -31,3 +31,9 @@ defmodule NQueens do
   def terminate?(population, _generation), do:
     Enum.max_by(population, &NQueens.fitness_function/1).fitness == 8
 end
+
+
+soln = Genetic.run(NQueens)
+
+IO.write("\n")
+IO.inspect(soln)
