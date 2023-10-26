@@ -56,6 +56,8 @@ def run(problem, opts \\ []) do
       {parents, leftover} = select(population, opts)
       children = crossover(parents, opts)
         children ++ leftover
+      |> mutation(opts)
+      |> evolve(problem, generation+1, opts)
     end
   end
 
@@ -68,6 +70,19 @@ def run(problem, opts \\ []) do
           {{head1, tail1}, {head2, tail2}} = {Enum.split(p1.genes, cx_point), Enum.split(p2.genes, cx_point)}
           {c1, c2} = {%Chromosome{genes: head1 ++ tail2}, %Chromosome{genes: head2 ++ tail1}}
           [c1 | [c2 | acc]]
+        end
+      )
+  end
+
+  def mutation(population, opts \\ []) do
+    population
+    |> Enum.map(
+        fn chromosome ->
+            if :rand.uniform() < 0.05 do
+            %Chromosome{genes: Enum.shuffle(chromosome.genes)}
+        else
+        chromosome
+          end
         end
       )
   end
