@@ -1,5 +1,5 @@
 defmodule NQueens do
-  @behaviour Problem
+  @behaviour Behaviour
   alias Types.Chromosome
 
   @impl true
@@ -9,8 +9,8 @@ defmodule NQueens do
   end
 
   @impl true
-  def fitness_functioan(chromosome) do
-    conflicts =
+  def fitness_function(chromosome) do
+    diag_clashes =
       for i <- 0..7, j <- 0..7 do
         if i != j do
           dx = abs(i - j)
@@ -24,14 +24,13 @@ defmodule NQueens do
           0
         end
       end
-    length(Enum.uniq(chromosome.genes)) - Enum.sum(conflicts)
+    length(Enum.uniq(chromosome.genes)) - Enum.sum(diag_clashes)
   end
 
   @impl true
   def terminate?(population, _generation), do:
     Enum.max_by(population, &NQueens.fitness_function/1).fitness == 8
 end
-
 
 soln = Genetic.run(NQueens)
 
