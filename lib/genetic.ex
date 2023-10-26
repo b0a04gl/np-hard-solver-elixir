@@ -25,11 +25,37 @@ def run(problem, opts \\ []) do
     |> Enum.sort_by(fitness_function, &>=/2)
   end
 
+  def select(population, opts \\ []) do
+    select_fn = Keyword.get(opts, :selection_type, &Tools.Selection.elite/2)
+    select_rate =   Keyword.get(opts, :selection_rate, 0.8)
+
+     n = round(length(population) * select_rate)
+    n = if rem(n, 2) == 0, do: n, else: n+1
+
+    parents =
+      select_fn
+      |> apply([population, n])
+
+      leftover = MapSet.difference(MapSet.new(population), MapSet.new(parents))
+
+  parents =
+      parents
+      |> Enum.chunk_every(2)
+      |> Enum.map(& List.to_tuple(&1))
+
+      {parents, MapSet.to_list(leftover)}
+  end
+
   def evolve(population, problem, generation, opts \\ []) do
     population = evaluate(population, &problem.fitness_function/1, opts)
     best = hd(population)
     IO.write("\rCurrent optimal : #{best.fitness}")
-
+    if problem.terminate?(population, generation) do
+      best
+    else
+      {parents, leftover} = select(population, opts)
+      |> evolve(problem, generation+1, opts)
+    end
   end
 
 
