@@ -36,3 +36,9 @@ soln = Genetic.run(NQueens)
 
 IO.write("\n")
 IO.inspect(soln)
+
+# Use reflection to find the module name
+module_name = Module.concat([Kernel, NQueens])
+
+# Print the module name
+IO.puts("Module name: #{module_name}")
