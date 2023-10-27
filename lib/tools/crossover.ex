@@ -6,6 +6,7 @@ defmodule Tools.Crossover do
     {p1_head, p1_tail} = Enum.split(p1.genes, cx_point)
     {p2_head, p2_tail} = Enum.split(p2.genes, cx_point)
     {c1, c2} = {p1_head ++ p2_tail, p2_head ++ p1_tail}
+
     {%Chromosome{genes: c1, size: length(c1)},
       %Chromosome{genes: c2, size: length(c2)}}
   end

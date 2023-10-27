@@ -72,6 +72,8 @@ defmodule Genetic do
           end
         end
       )
+       # IO.puts("Printing Solution:")
+    # IO.inspect(population)
   end
 
   def run(problem, opts \\ []) do
