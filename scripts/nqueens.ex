@@ -1,5 +1,5 @@
 defmodule NQueens do
-  @behaviour Behaviour
+  @behaviour Problem
   alias Types.Chromosome
 
   @impl true

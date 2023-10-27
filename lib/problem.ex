@@ -1,4 +1,4 @@
-defmodule Behaviour do
+defmodule Problem do
   alias Types.Chromosome
 
   @callback genotype :: Chromosome.t

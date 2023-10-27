@@ -19,7 +19,7 @@ defmodule Genetic do
   end
 
   def select(population, opts \\ []) do
-    select_fn = Keyword.get(opts, :selection_type, &Toolbox.Selection.elite/2)
+    select_fn = Keyword.get(opts, :selection_type, &Tools.Selection.elite/2)
     select_rate = Keyword.get(opts, :selection_rate, 0.8)
     n = round(length(population) * select_rate)
     n = if rem(n, 2) == 0, do: n, else: n+1
@@ -35,7 +35,7 @@ defmodule Genetic do
   end
 
   def crossover(population, opts \\ []) do
-    crossover_fn = Keyword.get(opts, :crossover_type, &Toolbox.Crossover.single_point/2)
+    crossover_fn = Keyword.get(opts, :crossover_type, &Tools.Crossover.single_point/2)
     population
     |> Enum.reduce([],
         fn {p1, p2}, acc ->
@@ -78,7 +78,38 @@ defmodule Genetic do
     population = initialize(&problem.genotype/0)
     population
     |> evolve(problem, 0, opts)
+
+    IO.puts("Best Solution:")
+    # IO.puts(to_string(population))
+    print_board(population)
   end
+
+
+  defp print_board(solutions) do
+    # IO.puts("Printing Solution:")
+    # IO.inspect(solution)
+    IO.puts("new population elite")
+    # IO.puts(to_string(solutions))
+    Enum.each(solutions, fn %{genes: genes} ->
+      IO.puts("Printing Solution:")
+      Enum.each(genes, fn col ->
+        row = Enum.map(0..7, fn i ->
+          if i == col do
+            "Q "
+          else
+            ". "
+          end
+        end
+        )
+      # end
+        IO.puts(Enum.join(row))
+      end)
+    end)
+
+
+  end
+
+
 
   def evolve(population, problem, generation, opts \\ []) do
     population = evaluate(population, &problem.fitness_function/1, opts)
