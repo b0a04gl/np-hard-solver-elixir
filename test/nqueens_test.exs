@@ -18,7 +18,6 @@ defmodule NQueensTest do
 
     fitness = NQueens.fitness_function(chromosome)
 
-    # Calculate the expected fitness for this specific chromosome (replace with the actual expected value)
     expected_fitness = -48
     assert fitness == expected_fitness
   end
@@ -33,5 +32,5 @@ defmodule NQueensTest do
 
     assert result == true
   end
-  
+
 end
