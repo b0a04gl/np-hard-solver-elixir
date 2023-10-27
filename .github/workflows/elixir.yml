@@ -2,8 +2,9 @@ name: Elixir CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master","develop" ]
 
 jobs:
   build:
